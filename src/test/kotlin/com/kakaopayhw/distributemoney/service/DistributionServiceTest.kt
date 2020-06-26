@@ -1,11 +1,10 @@
-package com.kakaopayhw.distributemoney
+package com.kakaopayhw.distributemoney.service
 
 import com.kakaopayhw.distributemoney.controller.interfaces.DistributeMoneyRequest
 import com.kakaopayhw.distributemoney.domain.DistributableMoneyRepository
 import com.kakaopayhw.distributemoney.domain.Distribution
 import com.kakaopayhw.distributemoney.domain.DistributionRepository
 import com.kakaopayhw.distributemoney.exception.InvalidArgumentException
-import com.kakaopayhw.distributemoney.service.DistributionService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
