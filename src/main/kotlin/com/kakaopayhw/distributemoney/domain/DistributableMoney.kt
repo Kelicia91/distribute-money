@@ -24,10 +24,7 @@ data class DistributableMoney (
     val money: Int,
 
     @Column(name = "receiver_id", nullable = true)
-    var receiverId: Int? = null,
-
-    @Column(name = "received_at", nullable = true)
-    var receivedAt: LocalDateTime? = null
+    var receiverId: Int? = null
 ) {
     companion object {
         fun of(distribution: Distribution, money: Int): DistributableMoney {
@@ -36,5 +33,9 @@ data class DistributableMoney (
                 money = money
             )
         }
+    }
+
+    fun receive(userId: Int): DistributableMoney {
+        return this.apply { receiverId = userId }
     }
 }

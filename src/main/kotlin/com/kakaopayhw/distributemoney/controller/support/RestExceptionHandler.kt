@@ -2,7 +2,9 @@ package com.kakaopayhw.distributemoney.controller.support
 
 import com.kakaopayhw.distributemoney.controller.interfaces.MessageKey
 import com.kakaopayhw.distributemoney.controller.interfaces.RestExceptionView
+import com.kakaopayhw.distributemoney.exception.DeniedAccessException
 import com.kakaopayhw.distributemoney.exception.InvalidArgumentException
+import com.kakaopayhw.distributemoney.exception.NotFoundEntityException
 import com.kakaopayhw.distributemoney.service.MessageSourceService
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -33,6 +35,26 @@ class RestExceptionHandler(
             exception = e,
             request = request,
             status = HttpStatus.BAD_REQUEST,
+            message = messageSourceService.getMessage(e.messageKey, e.objs)
+        )
+    }
+
+    @ExceptionHandler(NotFoundEntityException::class)
+    fun handle(e: NotFoundEntityException, request: WebRequest): ResponseEntity<Any> {
+        return handle(
+            exception = e,
+            request = request,
+            status = HttpStatus.BAD_REQUEST,
+            message = messageSourceService.getMessage(e.messageKey, e.objs)
+        )
+    }
+
+    @ExceptionHandler(DeniedAccessException::class)
+    fun handle(e: DeniedAccessException, request: WebRequest): ResponseEntity<Any> {
+        return handle(
+            exception = e,
+            request = request,
+            status = HttpStatus.FORBIDDEN,
             message = messageSourceService.getMessage(e.messageKey, e.objs)
         )
     }

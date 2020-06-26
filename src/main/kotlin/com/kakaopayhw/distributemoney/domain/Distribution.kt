@@ -60,4 +60,9 @@ data class Distribution (
                     .joinToString("")
         }
     }
+
+    fun isExpired(): Boolean {
+        if (createdAt == null) { return true }
+        return createdAt!!.plusMinutes(10) < LocalDateTime.now()
+    }
 }
