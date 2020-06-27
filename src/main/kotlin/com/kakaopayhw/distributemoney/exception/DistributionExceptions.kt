@@ -1,10 +1,10 @@
 package com.kakaopayhw.distributemoney.exception
 
-import com.kakaopayhw.distributemoney.controller.interfaces.MessageKey
+import com.kakaopayhw.distributemoney.support.MessageKey
 
 open class DistributionException(
-    var messageKey: MessageKey, 
-    vararg objs: Any
+        var messageKey: MessageKey,
+        vararg objs: Any
 ): RuntimeException (
     messageKey.name.plus(":").plus(objs.joinToString { it.toString() })
 ) {

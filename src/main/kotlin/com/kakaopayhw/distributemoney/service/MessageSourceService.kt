@@ -1,6 +1,6 @@
 package com.kakaopayhw.distributemoney.service
 
-import com.kakaopayhw.distributemoney.controller.interfaces.MessageKey
+import com.kakaopayhw.distributemoney.support.MessageKey
 import org.springframework.context.MessageSource
 import org.springframework.context.NoSuchMessageException
 import org.springframework.context.i18n.LocaleContextHolder

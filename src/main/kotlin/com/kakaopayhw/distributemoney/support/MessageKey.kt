@@ -1,4 +1,4 @@
-package com.kakaopayhw.distributemoney.controller.interfaces
+package com.kakaopayhw.distributemoney.support
 
 enum class MessageKey constructor(private val messageSourceKey: String) {
     EXCEPTION("exception"),

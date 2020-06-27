@@ -1,6 +1,6 @@
 package com.kakaopayhw.distributemoney.service
 
-import com.kakaopayhw.distributemoney.controller.interfaces.MessageKey
+import com.kakaopayhw.distributemoney.support.MessageKey
 import com.kakaopayhw.distributemoney.domain.DistributableMoney
 import com.kakaopayhw.distributemoney.domain.DistributableMoneyRepository
 import com.kakaopayhw.distributemoney.domain.Distribution

@@ -1,6 +1,6 @@
 package com.kakaopayhw.distributemoney.controller.support
 
-import com.kakaopayhw.distributemoney.controller.interfaces.MessageKey
+import com.kakaopayhw.distributemoney.support.MessageKey
 import com.kakaopayhw.distributemoney.controller.interfaces.RestExceptionView
 import com.kakaopayhw.distributemoney.exception.DeniedAccessException
 import com.kakaopayhw.distributemoney.exception.InvalidArgumentException
