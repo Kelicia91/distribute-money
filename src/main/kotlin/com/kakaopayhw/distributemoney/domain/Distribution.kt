@@ -41,6 +41,8 @@ data class Distribution (
 
         val TOKEN_CHAR_POOL: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
 
+        private val random = SecureRandom()
+
         fun of(userId: Int, roomId: String, request: DistributeMoneyRequest): Distribution {
             return Distribution(
                 senderId = userId,
@@ -52,8 +54,6 @@ data class Distribution (
         }
 
         private fun generateToken(): String {
-            // @NOTE: https://www.baeldung.com/kotlin-random-number
-            val random = SecureRandom()
             return (1..TOKEN_LENGTH)
                     .map { random.nextInt(TOKEN_CHAR_POOL.size) }
                     .map(TOKEN_CHAR_POOL::get)

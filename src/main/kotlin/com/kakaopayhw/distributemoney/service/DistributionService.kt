@@ -8,9 +8,11 @@ import com.kakaopayhw.distributemoney.domain.DistributionRepository
 import com.kakaopayhw.distributemoney.exception.DeniedAccessException
 import com.kakaopayhw.distributemoney.exception.InvalidArgumentException
 import com.kakaopayhw.distributemoney.exception.NotFoundEntityException
+import com.kakaopayhw.distributemoney.support.RandomUtil
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
+import java.security.SecureRandom
 
 @Service
 class DistributionService (
@@ -28,10 +30,10 @@ class DistributionService (
     }
 
     private fun generate(distribution: Distribution): List<DistributableMoney> {
-        val quotient = distribution.money / distribution.divisor
-        if (quotient <= 0) { throw InvalidArgumentException(MessageKey.INVALID_DISTRIBUTE) }
-        val remainder = distribution.money % distribution.divisor
-        return (1 until distribution.divisor).map { DistributableMoney.of(distribution, money = quotient) } + (DistributableMoney.of(distribution, money = quotient + remainder))
+        if (distribution.money < distribution.divisor) { throw InvalidArgumentException(MessageKey.INVALID_DISTRIBUTE) }
+
+        return RandomUtil.divideForPositive(distribution.money, distribution.divisor)
+            .map { DistributableMoney.of(distribution, money = it) }
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
