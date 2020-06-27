@@ -61,8 +61,13 @@ data class Distribution (
         }
     }
 
-    fun isExpired(): Boolean {
+    fun isReceivingExpired(): Boolean {
         if (createdAt == null) { return true }
         return createdAt!!.plusMinutes(10) < LocalDateTime.now()
+    }
+
+    fun isCheckingExpired(): Boolean {
+        if (createdAt == null) { return true }
+        return createdAt!!.plusDays(7) < LocalDateTime.now()
     }
 }

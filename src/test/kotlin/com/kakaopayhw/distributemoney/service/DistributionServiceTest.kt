@@ -44,7 +44,7 @@ class DistributionServiceTest {
 
         assertTrue { added.distributableMoneys.all { it.id != null && it.distribution.id == added.id } }
         assertEquals(divisor, added.distributableMoneys.size)
-        assertTrue { money == added.distributableMoneys.map { it.money }.reduce { acc, money -> acc + money } }
+        assertTrue { money == added.distributableMoneys.map { it.money }.fold(0) { acc, money -> acc + money } }
     }
 
     @Test
@@ -113,7 +113,7 @@ class DistributionServiceTest {
     }
 
     @Test
-    fun `getDistributableMoney - TIMEOUT_DISTRIBUTION`() {
+    fun `getDistributableMoney - TIMEOUT_TAKE_DISTRIBUTABLE_MONEY`() {
         val senderId = 1
         val roomId = "room1"
         val added = added(senderId, roomId, 1000, 3)
@@ -153,6 +153,20 @@ class DistributionServiceTest {
         val otherId = receiverId + 1
         assertThrows<NotFoundEntityException> {
             service.getDistributableMoney(otherId, roomId, added.token)
+        }
+    }
+
+    @Test
+    fun `getDistribution - TIMEOUT_CHECK_DISTRIBUTION`() {
+        val senderId = 1
+        val roomId = "room1"
+        val added = added(senderId, roomId, 1000, 3)
+
+        val fakeCreatedAt = LocalDateTime.now().minusYears(1)
+        distributionRepository.save(added.apply { added.createdAt = fakeCreatedAt })
+
+        assertThrows<DeniedAccessException> {
+            service.getDistribution(senderId, roomId, added.token)
         }
     }
 

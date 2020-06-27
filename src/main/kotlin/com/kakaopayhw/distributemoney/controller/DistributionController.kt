@@ -1,9 +1,6 @@
 package com.kakaopayhw.distributemoney.controller
 
-import com.kakaopayhw.distributemoney.controller.interfaces.DistributableMoneyView
-import com.kakaopayhw.distributemoney.controller.interfaces.DistributeMoneyRequest
-import com.kakaopayhw.distributemoney.controller.interfaces.DistributeMoneyView
-import com.kakaopayhw.distributemoney.controller.interfaces.Header
+import com.kakaopayhw.distributemoney.controller.interfaces.*
 import com.kakaopayhw.distributemoney.domain.Distribution
 import com.kakaopayhw.distributemoney.service.DistributionService
 import org.springframework.dao.OptimisticLockingFailureException
@@ -35,6 +32,20 @@ class DistributionController(
         return try {
             val distributableMoney = service.getDistributableMoney(userId, roomId, token)
             ResponseEntity.ok(DistributableMoneyView.of(distributableMoney))
+        } catch(e: OptimisticLockingFailureException) {
+            ResponseEntity.status(HttpStatus.CONFLICT).build()
+        }
+    }
+
+    @GetMapping("/{token}")
+    fun getDistributionMoney(
+        @RequestHeader(name = Header.USER_ID) userId: Int,
+        @RequestHeader(name = Header.ROOM_ID) roomId: String,
+        @PathVariable("token") token: String
+    ): ResponseEntity<DistributionView> {
+        return try {
+            val distribution = service.getDistribution(userId, roomId, token)
+            ResponseEntity.ok(DistributionView.of(distribution))
         } catch(e: OptimisticLockingFailureException) {
             ResponseEntity.status(HttpStatus.CONFLICT).build()
         }

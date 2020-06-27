@@ -43,8 +43,8 @@ class DistributionService (
             throw DeniedAccessException(MessageKey.NOT_ALLOWED_TAKE_SELF)
         }
 
-        if (distribution.isExpired()) {
-            throw DeniedAccessException(MessageKey.TIMEOUT_DISTRIBUTION)
+        if (distribution.isReceivingExpired()) {
+            throw DeniedAccessException(MessageKey.TIMEOUT_TAKE_DISTRIBUTABLE_MONEY)
         }
 
         if (distribution.distributableMoneys.find { userId == it.receiverId } != null) {
@@ -55,5 +55,21 @@ class DistributionService (
             ?: throw NotFoundEntityException(MessageKey.NOT_FOUND_DISTRIBUTABLE_MONEY)
 
         return distributableMoneyRepository.save(distributableMoney.receive(userId))
+    }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    fun getDistribution(userId: Int, roomId: String, token: String): Distribution {
+        val distribution = distributionRepository.findByRoomIdAndToken(roomId, token)
+            ?: throw NotFoundEntityException(MessageKey.NOT_FOUND_DISTRIBUTION)
+
+        if (userId != distribution.senderId) {
+            throw DeniedAccessException(MessageKey.NOT_ALLOWED_ACCESS_OTHERS_DISTRIBUTION)
+        }
+
+        if (distribution.isCheckingExpired()) {
+            throw DeniedAccessException(MessageKey.TIMEOUT_CHECK_DISTRIBUTION)
+        }
+
+        return distribution
     }
 }
