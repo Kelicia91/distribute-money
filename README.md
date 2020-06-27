@@ -1,7 +1,20 @@
 #distribute-money
 .
 
-## modeling
+## API
+```
+POST /distribute/money
+request.body: { money, divisor }
+response.body: { token }
+
+PUT /distribute/money/{token}/take
+response.body: { money }
+
+GET /distribute/money
+response.body: { distributedAt, money, takenMoney, takens: { takerId, takenMoney }[] }
+```
+
+## Modeling
 ```sql
 create table distributable_money (
     id bigint not null,
